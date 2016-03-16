@@ -203,7 +203,7 @@ var downloadCache = map[string]bool{}
 // root directories we have already considered during the download.
 // For example, all the packages in the github.com/google/codesearch repo
 // share the same root (the directory for that path), and we only need
-// to run the hg commands to consider each repository once.
+// to run the git commands to consider each repository once.
 var downloadRootCache = map[string]bool{}
 
 // download runs the download half of the get command

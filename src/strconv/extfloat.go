@@ -15,7 +15,7 @@ type extFloat struct {
 }
 
 // Powers of ten taken from double-conversion library.
-// http://code.google.com/p/double-conversion/
+// https://github.com/google/double-conversion
 const (
 	firstPowerOfTen = -348
 	stepPowerOfTen  = 8
