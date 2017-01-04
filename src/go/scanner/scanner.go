@@ -304,7 +304,9 @@ func (s *Scanner) scanNumber(seenDecimalPoint bool) (token.Token, string) {
 		// int or float
 		offs := s.offset
 		s.next()
-		if s.ch == 'x' || s.ch == 'X' {
+
+		switch s.ch {
+		case 'x', 'X':
 			// hexadecimal int
 			s.next()
 			s.scanMantissa(16)
@@ -312,7 +314,17 @@ func (s *Scanner) scanNumber(seenDecimalPoint bool) (token.Token, string) {
 				// only scanned "0x" or "0X"
 				s.error(offs, "illegal hexadecimal number")
 			}
-		} else {
+
+		case 'b', 'B':
+			// binary int
+			s.next()
+			s.scanMantissa(2)
+			if s.offset-offs <= 2 {
+				// only scanned "0b" or "0B"
+				s.error(offs, "illegal binary number")
+			}
+
+		default:
 			// octal int or float
 			seenDecimalDigit := false
 			s.scanMantissa(8)
@@ -329,6 +341,7 @@ func (s *Scanner) scanNumber(seenDecimalPoint bool) (token.Token, string) {
 				s.error(offs, "illegal octal number")
 			}
 		}
+
 		goto exit
 	}
 
