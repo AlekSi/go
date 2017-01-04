@@ -131,7 +131,9 @@ var sampleTokens = [...]struct {
 	{_Literal, "123456789012345678890123456789012345678890", 0, 0},
 	{_Literal, "01234567", 0, 0},
 	{_Literal, "0x0", 0, 0},
-	{_Literal, "0xcafebabe", 0, 0},
+	{_Literal, "0Xcafebabe", 0, 0},
+	{_Literal, "0b01", 0, 0},
+	{_Literal, "0B1100", 0, 0},
 	{_Literal, "0.", 0, 0},
 	{_Literal, "0.e0", 0, 0},
 	{_Literal, "0.e-1", 0, 0},
@@ -270,11 +272,13 @@ func TestScanErrors(t *testing.T) {
 		// token-level errors
 		{"x + ~y", "bitwise complement operator is ^", 4, 1},
 		{"foo$bar = 0", "illegal character U+0024 '$'", 3, 1},
-		{"const x = 0xyz", "malformed hex constant", 12, 1},
 		{"0123456789", "malformed octal constant", 10, 1},
+		{"const x = 0xyz", "malformed hex constant", 12, 1},
+		{"0b012", "malformed binary constant", 5, 1},
 		{"0123456789. /* foobar", "comment not terminated", 12, 1},   // valid float constant
 		{"0123456789e0 /*\nfoobar", "comment not terminated", 13, 1}, // valid float constant
 		{"var a, b = 08, 07\n", "malformed octal constant", 13, 1},
+		{"var a, b = 0b2, 0b1\n", "malformed binary constant", 14, 1},
 		{"(x + 1.0e+x)", "malformed floating-point constant exponent", 10, 1},
 
 		{`''`, "empty character literal or unescaped ' in character literal", 1, 1},

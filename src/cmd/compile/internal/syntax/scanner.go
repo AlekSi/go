@@ -367,6 +367,7 @@ func (s *scanner) number(c rune) {
 		s.kind = IntLit // until proven otherwise
 		if c == '0' {
 			c = s.getr()
+
 			if c == 'x' || c == 'X' {
 				// hex
 				c = s.getr()
@@ -377,6 +378,22 @@ func (s *scanner) number(c rune) {
 				}
 				if !hasDigit {
 					s.error("malformed hex constant")
+				}
+				goto done
+			}
+
+			if c == 'b' || c == 'B' {
+				// binary
+				c = s.getr()
+				only0and1 := true
+				for isDigit(c) {
+					if c > '1' {
+						only0and1 = false
+					}
+					c = s.getr()
+				}
+				if !only0and1 {
+					s.error("malformed binary constant")
 				}
 				goto done
 			}

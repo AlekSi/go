@@ -116,6 +116,18 @@ func main() {
 	var u33 uint64 = +18446744073709551615
 	_, _, _, _ = u30, u31, u32, u33
 
+	// hex, octal and binary
+	var x42 int = 0x2a
+	var X42 int = 0X2a
+	var o42 int = 052
+	var b42 int = 0b101010
+	var B42 int = 0B101010
+	assert(x42 == 42, "x42")
+	assert(X42 == 42, "X42")
+	assert(o42 == 42, "o42")
+	assert(b42 == 42, "b42")
+	assert(B42 == 42, "B42")
+
 	// float
 	var f00 float32 = 3.14159
 	var f01 float32 = -3.14159

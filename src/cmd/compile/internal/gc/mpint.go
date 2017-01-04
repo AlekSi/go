@@ -281,12 +281,13 @@ func (a *Mpint) SetInt64(c int64) {
 func (a *Mpint) SetString(as string) {
 	_, ok := a.Val.SetString(as, 0)
 	if !ok {
-		// required syntax is [+-][0[x]]d*
+		// required syntax is [+-][0[x|X|b|B]]d*
 		// At the moment we lose precise error cause;
 		// the old code distinguished between:
-		// - malformed hex constant
-		// - malformed octal constant
 		// - malformed decimal constant
+		// - malformed octal constant
+		// - malformed hex constant
+		// - malformed binary constant
 		// TODO(gri) use different conversion function
 		yyerror("malformed integer constant: %s", as)
 		a.Val.SetUint64(0)
